@@ -7,7 +7,7 @@ const Statistics = observer(() => {
   const { incidents } = useStore().incidents;
 
   const total = incidents.length;
-  const high = incidents.filter((i) => i.level === 'CRITICAL').length;
+  const high = incidents.filter((i) => i.level === 'HIGH').length;
   const medium = incidents.filter((i) => i.level === 'MEDIUM').length;
   const low = incidents.filter((i) => i.level === 'LOW').length;
 

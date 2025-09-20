@@ -5,11 +5,11 @@ import { Text, Title, Badge, Loader, Stack, Group } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
 import ReactDOMServer from 'react-dom/server';
-import styles from './NewsMap.module.scss';
 import Shelter from '@/components/icons/Shelter';
 import Pharmacy from '@/components/icons/Pharmacy';
-
 import { MapPin, Users, Globe } from 'lucide-react';
+
+import styles from './NewsMap.module.scss';
 
 const getCustomIcon = (type) => {
   let iconSvg;
