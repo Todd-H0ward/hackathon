@@ -45,7 +45,7 @@ export class NewMapStore {
     const response = await MapService.fetchPlaces('RU-MOW');
 
     if ('data' in response) {
-      response.data.forEach((place) => {
+      response.data.items.forEach((place) => {
         this.setPlace(place);
       });
     }
