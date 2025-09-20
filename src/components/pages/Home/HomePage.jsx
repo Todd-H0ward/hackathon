@@ -1,12 +1,12 @@
-import Counter from '../../commons/Counter/Counter.jsx';
 import PageWrapper from '../../layouts/PageWrapper/PageWrapper.jsx';
+import NewsDrawer from '@/components/commons/NewsDrawer/index.js';
 
 import styles from './HomePage.module.scss';
 
 const HomePage = () => {
   return (
     <PageWrapper className={styles.root}>
-      <Counter />
+      <NewsDrawer />
     </PageWrapper>
   );
 };
