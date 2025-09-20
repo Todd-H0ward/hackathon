@@ -3,6 +3,13 @@
   width: 100%;
 }
 
+.loader {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .circle {
   width: 30px;
   height: 30px;
