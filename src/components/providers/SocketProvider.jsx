@@ -39,7 +39,7 @@ export const SocketProvider = observer(({ children }) => {
       if (cancelled) return;
       setConnected(true);
 
-      stomp.subscribe('/topic/all', (message) => {
+      stomp.subscribe('/topic/incidents', (message) => {
         try {
           const payload = JSON.parse(message.body);
           incidents.setIncidents([payload]);

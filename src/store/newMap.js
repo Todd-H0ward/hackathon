@@ -1,6 +1,7 @@
 import { makeAutoObservable, observable, values } from 'mobx';
 import NewsService from '@/api/IncidentsService.js';
 import MapService from '@/api/MapService.js';
+import { IncidentStore } from '@/store/incidents.js';
 
 export class NewMapStore {
   _places = observable.map();
@@ -29,6 +30,12 @@ export class NewMapStore {
     this._places.set(value.id, value);
   }
 
+  setPlaces(places) {
+    places.forEach((place) => {
+      this.setPlace(place);
+    });
+  }
+
   setIsLoading(value) {
     this._isLoading = value;
   }
@@ -45,10 +52,9 @@ export class NewMapStore {
     const response = await MapService.fetchPlaces('RU-MOW');
 
     if ('data' in response) {
-      response.data.items.forEach((place) => {
-        this.setPlace(place);
-      });
+      this.setPlaces(response.data.items);
     }
+
     this.setIsLoading(false);
   };
 }

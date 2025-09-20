@@ -31,7 +31,7 @@ const NewsDrawer = observer(() => {
 
   return (
     <Stack className={styles.root}>
-      <Group>
+      {!    opened && <Group>
         <Button
           className={clsx(styles.drawerButton)}
           onClick={() => setOpened(true)}
@@ -39,6 +39,7 @@ const NewsDrawer = observer(() => {
           Актуальные происшествия
         </Button>
       </Group>
+      }
 
       <Drawer
         className={styles.drawer}
