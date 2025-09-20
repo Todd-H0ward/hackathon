@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Button,
   Drawer,
   Group,
-  Card,
   Text,
-  Badge,
   Stack,
-  Skeleton,
   Center,
+  Select,
 } from '@mantine/core';
 import clsx from 'clsx';
+import NewsCard from '@/components/commons/NewsCard/NewsCard';
+import SkeletonCard from '@/components/commons/SkeletonCard/SkeletonCard';
 
 import styles from './NewsDrawer.module.scss';
 
@@ -40,10 +40,27 @@ const NewsDrawer = () => {
   const [opened, setOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [sortBy, setSortBy] = useState('');
+
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  const sortedIncidents = useMemo(() => {
+    if (!sortBy) return incidents;
+
+    const data = [...incidents];
+    if (sortBy === 'time') {
+      data.sort(
+        (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime(),
+      );
+    } else if (sortBy === 'danger') {
+      const rank = { Высокий: 3, Средний: 2, Низкий: 1 };
+      data.sort((a, b) => rank[b.dangerLevel] - rank[a.dangerLevel]);
+    }
+    return data;
+  }, [sortBy]);
 
   return (
     <Stack className={styles.root}>
@@ -65,57 +82,30 @@ const NewsDrawer = () => {
         size="xl"
         position="right"
       >
+        <Select
+          m="15px 0 30px 0"
+          w={180}
+          label="Сортировать по"
+          placeholder="Сортировка по"
+          data={[
+            { value: 'time', label: 'Времени' },
+            { value: 'danger', label: 'Опасности' },
+          ]}
+          value={sortBy}
+          onChange={setSortBy}
+          clearable
+        />
+
         <Stack gap="md">
           {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => (
-              <Card key={i} shadow="sm" padding="lg" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Skeleton height={16} width="60%" />
-                  <Skeleton height={16} width={80} />
-                </Group>
-                <Skeleton height={12} mt="sm" width="40%" />
-                <Skeleton height={12} mt="sm" width="50%" />
-                <Skeleton height={12} mt="sm" width="90%" />
-              </Card>
-            ))
-          ) : incidents.length === 0 ? (
+            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : sortedIncidents.length === 0 ? (
             <Center py="lg">
               <Text c="dimmed">Нет происшествий</Text>
             </Center>
           ) : (
-            incidents.map((incident) => (
-              <Card key={incident.id} shadow="sm" padding="lg" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Text fw={500}>{incident.title}</Text>
-                  <Badge
-                    color={
-                      incident.status === 'Подтверждено' ? 'red' : 'yellow'
-                    }
-                  >
-                    {incident.status}
-                  </Badge>
-                </Group>
-
-                <Text size="sm" c="dimmed">
-                  {incident.time} | {incident.city}
-                </Text>
-
-                <Text
-                  size="sm"
-                  mt="sm"
-                  c={
-                    incident.dangerLevel === 'Высокий'
-                      ? 'red'
-                      : incident.dangerLevel === 'Средний'
-                        ? 'yellow'
-                        : 'green'
-                  }
-                >
-                  Уровень опасности: {incident.dangerLevel}
-                </Text>
-
-                <Text size="sm">{incident.description}</Text>
-              </Card>
+            sortedIncidents.map((incident) => (
+              <NewsCard key={incident.id} incident={incident} />
             ))
           )}
         </Stack>
