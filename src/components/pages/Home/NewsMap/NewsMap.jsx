@@ -1,10 +1,44 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { Card, Text, Title, Badge, Group, Loader } from '@mantine/core';
+import { Card, Text, Title, Badge, Loader } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
+import ReactDOMServer from 'react-dom/server';
 import styles from './NewsMap.module.scss';
+import Shelter from '@/components/icons/Shelter';
+import Pharmacy from '@/components/icons/Pharmacy';
+
+const getCustomIcon = (type) => {
+  let iconSvg;
+
+  if (type === 'SHELTER') {
+    iconSvg = ReactDOMServer.renderToString(
+      <div className={styles.iconBg}>
+        <Shelter color="#1c7ed6" size={30} />
+      </div>,
+    );
+  } else if (type === 'PHARMACY') {
+    iconSvg = ReactDOMServer.renderToString(
+      <div className={styles.iconBg}>
+        <Pharmacy color="#37b24d" size={30} />
+      </div>,
+    );
+  } else {
+    iconSvg = ReactDOMServer.renderToString(
+      <div className={styles.iconBg}>
+        <Shelter color="#1c7ed6" size={30} />
+      </div>,
+    );
+  }
+
+  return L.divIcon({
+    className: '',
+    html: iconSvg,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+  });
+};
 
 const NewsMap = observer(() => {
   const { places, fetchPlaces, isLoading } = useStore().newsMap;
@@ -12,16 +46,6 @@ const NewsMap = observer(() => {
   useEffect(() => {
     fetchPlaces();
   }, []);
-
-  const getCustomIcon = (color) => {
-    const circleDivIcon = L.divIcon({
-      className: styles.pulse,
-      html: `<div class="${styles.circle}" style="background-color: ${color};"></div>`, // Добавляем круг с заданным цветом
-      iconSize: [60, 60],
-      iconAnchor: [30, 30],
-    });
-    return circleDivIcon;
-  };
 
   return (
     <>
@@ -44,7 +68,7 @@ const NewsMap = observer(() => {
             <Marker
               key={place.id}
               position={[place.lat, place.lng]}
-              icon={getCustomIcon(place.type === 'SHELTER' ? 'blue' : 'green')}
+              icon={getCustomIcon(place.type)}
             >
               <Popup>
                 <Card shadow="sm" padding="md">
@@ -54,11 +78,15 @@ const NewsMap = observer(() => {
                   </Text>
                   <Text size="sm">
                     <strong>Тип:</strong>{' '}
-                    <Badge color="blue">{place.type}</Badge>
+                    <Badge color={place.type === 'SHELTER' ? 'blue' : 'green'}>
+                      {place.type}
+                    </Badge>
                   </Text>
-                  <Text size="sm">
-                    <strong>Вместимость:</strong> {place.capacity} человек
-                  </Text>
+                  {place.capacity && (
+                    <Text size="sm">
+                      <strong>Вместимость:</strong> {place.capacity} человек
+                    </Text>
+                  )}
                   <Text size="sm">
                     <strong>Регион:</strong> {place.regionCode}
                   </Text>
