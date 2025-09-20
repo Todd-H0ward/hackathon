@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
 
 const NewsMap = observer(() => {
-  const { markers } = useStore().newsMap;
+  const { markers, pharmacy } = useStore().newsMap;
 
   const getCustomIcon = (color) => {
     const circleDivIcon = L.divIcon({
@@ -16,6 +16,21 @@ const NewsMap = observer(() => {
       iconAnchor: [30, 30],
     });
     return circleDivIcon;
+  };
+
+  const getPharmacyIcon = (color) => {
+    const pharmacyDivIcon = L.divIcon({
+      className: styles.pulse,
+      html: `
+      <div class="${styles.pharmacyIcon}">
+        <div class="${styles.droplet}" style="background-color: ${color};"></div>
+        <div class="${styles.plusSign}">+</div>
+      </div>
+    `,
+      iconSize: [50, 50],
+      iconAnchor: [25, 25], // Центр иконки
+    });
+    return pharmacyDivIcon;
   };
 
   return (
@@ -29,7 +44,6 @@ const NewsMap = observer(() => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-
       {markers.map((marker) => (
         <Marker
           key={marker.id}
@@ -39,6 +53,15 @@ const NewsMap = observer(() => {
           <Popup>
             Это метка номер {marker.id}, цвет: {marker.color}
           </Popup>
+        </Marker>
+      ))}
+      {pharmacy.map((pharmacy) => (
+        <Marker
+          key={pharmacy.id}
+          position={pharmacy.coords}
+          icon={getPharmacyIcon(pharmacy.color)}
+        >
+          <Popup>Здесь находится безопасное укрытие</Popup>
         </Marker>
       ))}
     </MapContainer>
