@@ -24,7 +24,7 @@ const Statistics = observer(() => {
           </Group>
 
           <Group gap="xs">
-            <Text size="sm" c="red">
+            <Text size="sm" c="red.7">
               Высокий:
             </Text>
             <Text size="sm" fw={600}>
@@ -33,7 +33,7 @@ const Statistics = observer(() => {
           </Group>
 
           <Group gap="xs">
-            <Text size="sm" c="yellow">
+            <Text size="sm" c="orange.7">
               Средний:
             </Text>
             <Text size="sm" fw={600}>
@@ -42,7 +42,7 @@ const Statistics = observer(() => {
           </Group>
 
           <Group gap="xs">
-            <Text size="sm" c="green">
+            <Text size="sm" c="green.7">
               Низкий:
             </Text>
             <Text size="sm" fw={600}>

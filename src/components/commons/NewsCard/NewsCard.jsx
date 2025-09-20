@@ -1,24 +1,36 @@
 import { Card, Group, Text, Badge } from '@mantine/core';
+import { observer } from 'mobx-react-lite';
 
 const getLevelColor = (level) => {
-  if (level === 'CRITICAL') {
-    return 'red';
+  switch (level) {
+    case 'CRITICAL':
+    case 'HIGH':
+      return 'red.7';
+    case 'MEDIUM':
+      return 'orange.7';
+    case 'LOW':
+      return 'green.7';
+    default:
+      return 'gray';
   }
-
-  if (level === 'HIGH') {
-    return 'orange';
-  }
-
-  if (level === 'LOW') {
-    return 'green';
-  }
-
-  return 'yellow';
 };
 
-const NewsCard = ({ incident }) => {
-  const statusColor = incident.status === 'NEW' ? 'blue' : 'gray'; // Пример для статуса
-  const levelColor = getLevelColor(incident.color);
+const getStatusColor = (status) => {
+  switch (status) {
+    case 'NEW':
+      return 'blue';
+    case 'IN_PROGRESS':
+      return 'yellow';
+    case 'RESOLVED':
+      return 'green';
+    default:
+      return 'gray';
+  }
+};
+
+const NewsCard = observer(({ incident }) => {
+  const levelColor = getLevelColor(incident.level);
+  const statusColor = getStatusColor(incident.status);
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
@@ -28,7 +40,7 @@ const NewsCard = ({ incident }) => {
   return (
     <Card key={incident.id} shadow="sm" padding="lg" withBorder>
       <Group justify="space-between" mb="xs">
-        <Text fw={500}>{incident.kind}</Text>
+        <Text fw={700}>{incident.kind}</Text>
         <Badge color={statusColor}>{incident.status}</Badge>
       </Group>
 
@@ -47,6 +59,6 @@ const NewsCard = ({ incident }) => {
       </Text>
     </Card>
   );
-};
+});
 
 export default NewsCard;

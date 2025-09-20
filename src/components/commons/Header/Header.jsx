@@ -1,12 +1,12 @@
 import { AppShell, Button, Group } from '@mantine/core';
 import { Search } from 'lucide-react';
-
 import AccountDropdown from './AccountDropdown/index.js';
 import { STATIC_LINKS } from '@/constants/staticLinks.js';
 import { Link, useLocation } from 'react-router';
-import styles from './Header.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
+
+import styles from './Header.module.scss';
 
 const Header = observer(() => {
   const { isAuth, account, logout } = useStore().auth;
