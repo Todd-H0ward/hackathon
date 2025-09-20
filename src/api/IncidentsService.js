@@ -1,7 +1,7 @@
 import { makeRequest } from '@/api/makeRequest.js';
 
 class IncidentsService {
-  fetchIncidents(minLat, maxLat, minLng, maxLng, since) {
+  fetchIncidents(minLat, maxLat, minLng, maxLng, since, page) {
     return makeRequest({
       url: '/public/incidents',
       params: {
@@ -10,6 +10,7 @@ class IncidentsService {
         minLng,
         maxLng,
         since,
+        page,
       },
     });
   }

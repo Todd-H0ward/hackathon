@@ -1,5 +1,5 @@
 import { AppShell, Button, Group } from '@mantine/core';
-import { Search } from 'lucide-react';
+import { Radiation, Search } from 'lucide-react';
 import AccountDropdown from './AccountDropdown/index.js';
 import { STATIC_LINKS } from '@/constants/staticLinks.js';
 import { Link, useLocation } from 'react-router';
@@ -20,7 +20,7 @@ const Header = observer(() => {
     <AppShell.Header className={styles.root} h={60} align="center">
       <Group justify="space-between" align="center" px="md">
         <Link className={styles.link} to={STATIC_LINKS.HOME}>
-          <Search size={25} />
+          <Radiation size={25} />
         </Link>
 
         {isAuth ? (
