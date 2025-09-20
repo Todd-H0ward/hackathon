@@ -86,7 +86,12 @@ const AddNewsModal = ({ className }) => {
         </form>
       </Modal>
 
-      <Button className={className} variant="default" onClick={open}>
+      <Button
+        className={className}
+        variant="filled"
+        color="blue.7"
+        onClick={open}
+      >
         Сообщить о происшествии
       </Button>
     </>
