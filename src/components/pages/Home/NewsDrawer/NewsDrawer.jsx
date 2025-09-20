@@ -73,6 +73,9 @@ const NewsDrawer = observer(() => {
                   <IncidentCard key={incident.id} incident={incident} />
                 ))
               )}
+              <Button onClick={incidentsStore.loadNextPage} variant="outline">
+                Загрузить ещё
+              </Button>
             </Stack>
           </Tabs.Panel>
           <Tabs.Panel value="regionNews">
@@ -91,6 +94,9 @@ const NewsDrawer = observer(() => {
                   <NewsCard key={news.id} news={news} />
                 ))
               )}
+              <Button onClick={newsStore.loadNextPage} variant="outline">
+                Загрузить ещё
+              </Button>
             </Stack>
           </Tabs.Panel>
         </Tabs>

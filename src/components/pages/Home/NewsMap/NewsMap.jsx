@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { Card, Text, Title, Badge, Loader } from '@mantine/core';
+import { Text, Title, Badge, Loader, Stack, Group } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
 import ReactDOMServer from 'react-dom/server';
 import Shelter from '@/components/icons/Shelter';
 import Pharmacy from '@/components/icons/Pharmacy';
+import { MapPin, Users, Globe } from 'lucide-react';
 
 import styles from './NewsMap.module.scss';
 
@@ -16,19 +17,19 @@ const getCustomIcon = (type) => {
   if (type === 'SHELTER') {
     iconSvg = ReactDOMServer.renderToString(
       <div className={styles.iconBg}>
-        <Shelter color="#1c7ed6" size={30} />
+        <Shelter color="#1c7ed6" size={28} />
       </div>,
     );
   } else if (type === 'PHARMACY') {
     iconSvg = ReactDOMServer.renderToString(
       <div className={styles.iconBg}>
-        <Pharmacy color="#37b24d" size={30} />
+        <Pharmacy color="#37b24d" size={28} />
       </div>,
     );
   } else {
     iconSvg = ReactDOMServer.renderToString(
       <div className={styles.iconBg}>
-        <Shelter color="#1c7ed6" size={30} />
+        <Shelter color="#1c7ed6" size={28} />
       </div>,
     );
   }
@@ -65,6 +66,7 @@ const NewsMap = observer(() => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
+
           {places.map((place) => (
             <Marker
               key={place.id}
@@ -72,28 +74,42 @@ const NewsMap = observer(() => {
               icon={getCustomIcon(place.type)}
             >
               <Popup>
-                <Card shadow="sm" padding="md">
-                  <Title order={3}>{place.name}</Title>
-                  <Text size="sm" c="dimmed">
-                    <strong>Адрес:</strong> {place.address}
-                  </Text>
-                  <Text size="sm">
-                    <strong>Тип:</strong>{' '}
+                <Stack gap="md" style={{ minWidth: 220 }}>
+                  <Group justify="space-between">
+                    <Title order={5} m={0}>
+                      {place.name}
+                    </Title>
                     <Badge
                       color={place.type === 'SHELTER' ? 'blue.7' : 'green.7'}
+                      variant="light"
                     >
-                      {place.type}
+                      {place.type === 'SHELTER' ? 'Убежище' : 'Аптека'}
                     </Badge>
-                  </Text>
-                  {place.capacity && (
-                    <Text size="sm">
-                      <strong>Вместимость:</strong> {place.capacity} человек
+                  </Group>
+
+                  <Group gap={6}>
+                    <MapPin size={16} />
+                    <Text size="sm" m={0}>
+                      {place.address}
                     </Text>
+                  </Group>
+
+                  {place.capacity != null && (
+                    <Group gap={6}>
+                      <Users size={16} />
+                      <Text size="sm" m={0}>
+                        {place.capacity} человек
+                      </Text>
+                    </Group>
                   )}
-                  <Text size="sm">
-                    <strong>Регион:</strong> {place.regionCode}
-                  </Text>
-                </Card>
+
+                  <Group gap={6}>
+                    <Globe size={16} />
+                    <Text size="sm" m={0}>
+                      {place.regionCode}
+                    </Text>
+                  </Group>
+                </Stack>
               </Popup>
             </Marker>
           ))}
