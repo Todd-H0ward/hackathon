@@ -43,7 +43,7 @@ export class IncidentStore {
     );
 
     if ('data' in response) {
-      this.setIncidents(response.data);
+      this.setIncidents(response.data.items);
     }
 
     this.setIsLoading(false);

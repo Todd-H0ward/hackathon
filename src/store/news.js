@@ -40,7 +40,7 @@ export class NewsStore {
     const response = await NewsService.fetchNews(this._region);
 
     if ('data' in response) {
-      this.setNews(response.data);
+      this.setNews(response.data.items);
     }
 
     this.setIsLoading(false);
