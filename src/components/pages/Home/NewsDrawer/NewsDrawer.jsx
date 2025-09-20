@@ -71,7 +71,7 @@ const NewsDrawer = observer(() => {
                 </Center>
               ) : (
                 incidentsStore.incidents.map((incident) => (
-                  <IncidentCard key={incident.id} incident={incident} />
+                  <IncidentCard key={incident.id} incident={incident} setOpened={setOpened} />
                 ))
               )}
               <Button onClick={incidentsStore.loadNextPage} variant="outline">

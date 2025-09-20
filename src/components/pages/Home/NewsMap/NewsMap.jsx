@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from 'react-leaflet';
 import L from 'leaflet';
 import { Text, Title, Badge, Loader, Stack, Group } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
@@ -10,6 +16,9 @@ import Pharmacy from '@/components/icons/Pharmacy';
 import { MapPin, Users, Globe, AlertTriangle, Radiation, Flame, Droplets, Cloud } from 'lucide-react';
 
 import styles from './NewsMap.module.scss';
+import { getIncidentKindText } from '@/helpers/getIncidentKindText.js';
+import { getIncidentLevelText } from '@/helpers/getIncidentLevelText.js';
+import { getIncidentIcon } from '@/helpers/getIncidentIcon.jsx';
 
 const getPlaceIcon = (type) => {
   let iconSvg;
@@ -42,81 +51,21 @@ const getPlaceIcon = (type) => {
   });
 };
 
-const getIncidentIcon = (kind, level) => {
-  let iconColor;
-  let IconComponent;
 
-  switch (level) {
-    case 'HIGH':
-      iconColor = '#ff6b6b';
-      break;
-    case 'MEDIUM':
-      iconColor = '#fcc419';
-      break;
-    case 'LOW':
-      iconColor = '#51cf66';
-      break;
-    default:
-      iconColor = '#868e96';
-  }
-
-  switch (kind) {
-    case 'CHEMICAL':
-      IconComponent = Cloud;
-      break;
-    case 'RADIATION_BURST':
-      IconComponent = Radiation;
-      break;
-    case 'FIRE':
-      IconComponent = Flame;
-      break;
-    case 'FLOOD':
-      IconComponent = Droplets;
-      break;
-    default:
-      IconComponent = AlertTriangle;
-  }
-
-  const iconSvg = ReactDOMServer.renderToString(
-    <div className={styles.circle} style={{ backgroundColor: iconColor }}>
-      <IconComponent color="#fff" size={20} style={{ position: 'relative', zIndex: 10 }} />
-    </div>
-  );
-
-  return L.divIcon({
-    className: '',
-    html: iconSvg,
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
+const LocationUpdater = ({ location }) => {
+  const map = useMapEvents({
+    locationfound: (e) => {
+      map.setView(e.latlng, map.getZoom());
+    },
   });
-};
 
-const getIncidentKindText = (kind) => {
-  switch (kind) {
-    case 'CHEMICAL':
-      return 'Химическая угроза';
-    case 'RADIATION_BURST':
-      return 'Радиационная угроза';
-    case 'FIRE':
-      return 'Пожар';
-    case 'FLOOD':
-      return 'Наводнение';
-    default:
-      return kind;
-  }
-};
+  useEffect(() => {
+    if (location && location.length === 2) {
+      map.setView(location, map.getZoom());
+    }
+  }, [location, map]);
 
-const getIncidentLevelText = (level) => {
-  switch (level) {
-    case 'HIGH':
-      return 'Высокий';
-    case 'MEDIUM':
-      return 'Средний';
-    case 'LOW':
-      return 'Низкий';
-    default:
-      return level;
-  }
+  return null;
 };
 
 const NewsMap = observer(() => {
@@ -137,10 +86,11 @@ const NewsMap = observer(() => {
         </div>
       ) : (
         <MapContainer
-          center={[56.858745, 35.917421]}
-          zoom={10}
+          center={newsMap.location}
+          zoom={7}
           className={styles.root}
         >
+          <LocationUpdater location={newsMap.location} />
           <TileLayer
             zIndex={10}
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -220,7 +170,7 @@ const NewsMap = observer(() => {
                   <Group gap={6}>
                     <MapPin size={16} />
                     <Text size="sm" m={0}>
-                      Координаты: {incident.lat.toFixed(6)}, {incident.lng.toFixed(6)}
+                      Координаты: {incident.lat.toFixed(4)}, {incident.lng.toFixed(4)}
                     </Text>
                   </Group>
 

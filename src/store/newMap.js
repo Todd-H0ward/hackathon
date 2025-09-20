@@ -5,13 +5,11 @@ import { IncidentStore } from '@/store/incidents.js';
 
 export class NewMapStore {
   _places = observable.map();
-  _location = observable.array();
+  _location = observable.array([56.858745, 35.917421]);
   _isLoading = false;
 
   constructor() {
     makeAutoObservable(this);
-
-    this._location = [56.858745, 35.917421];
   }
 
   get places() {
@@ -40,10 +38,8 @@ export class NewMapStore {
     this._isLoading = value;
   }
 
-  setLocation(lat, lng) {
-    this._location = [lat, lng];
-    localStorage.setItem('lat', lat);
-    localStorage.setItem('lng', lng);
+  setLocation = (lat, lng) => {
+    this._location.replace([lat, lng]);
   }
 
   fetchPlaces = async () => {
