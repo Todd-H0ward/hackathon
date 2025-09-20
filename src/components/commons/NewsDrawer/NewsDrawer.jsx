@@ -1,5 +1,14 @@
-import { useState } from 'react';
-import { Button, Drawer, Group, Card, Text, Badge, Stack } from '@mantine/core';
+import { useState, useEffect } from 'react';
+import {
+  Button,
+  Drawer,
+  Group,
+  Card,
+  Text,
+  Badge,
+  Stack,
+  Skeleton,
+} from '@mantine/core';
 import clsx from 'clsx';
 
 import styles from './NewsDrawer.module.scss';
@@ -28,6 +37,12 @@ const incidents = [
 
 const NewsDrawer = () => {
   const [opened, setOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <Stack>
@@ -49,38 +64,52 @@ const NewsDrawer = () => {
         position="right"
       >
         <Stack gap="md">
-          {incidents.map((incident) => (
-            <Card key={incident.id} shadow="sm" padding="lg" withBorder>
-              <Group justify="space-between" mb="xs">
-                <Text fw={500}>{incident.title}</Text>
-                <Badge
-                  color={incident.status === 'Подтверждено' ? 'red' : 'yellow'}
-                >
-                  {incident.status}
-                </Badge>
-              </Group>
+          {isLoading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} shadow="sm" padding="lg" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Skeleton height={16} width="60%" />
+                    <Skeleton height={16} width={80} />
+                  </Group>
+                  <Skeleton height={12} mt="sm" width="40%" />
+                  <Skeleton height={12} mt="sm" width="50%" />
+                  <Skeleton height={12} mt="sm" width="90%" />
+                </Card>
+              ))
+            : incidents.map((incident) => (
+                <Card key={incident.id} shadow="sm" padding="lg" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>{incident.title}</Text>
+                    <Badge
+                      color={
+                        incident.status === 'Подтверждено' ? 'red' : 'yellow'
+                      }
+                    >
+                      {incident.status}
+                    </Badge>
+                  </Group>
 
-              <Text size="sm" c="dimmed">
-                {incident.time} | {incident.city}
-              </Text>
+                  <Text size="sm" c="dimmed">
+                    {incident.time} | {incident.city}
+                  </Text>
 
-              <Text
-                size="sm"
-                mt="sm"
-                c={
-                  incident.dangerLevel === 'Высокий'
-                    ? 'red'
-                    : incident.dangerLevel === 'Средний'
-                      ? 'yellow'
-                      : 'green'
-                }
-              >
-                Уровень опасности: {incident.dangerLevel}
-              </Text>
+                  <Text
+                    size="sm"
+                    mt="sm"
+                    c={
+                      incident.dangerLevel === 'Высокий'
+                        ? 'red'
+                        : incident.dangerLevel === 'Средний'
+                          ? 'yellow'
+                          : 'green'
+                    }
+                  >
+                    Уровень опасности: {incident.dangerLevel}
+                  </Text>
 
-              <Text size="sm">{incident.description}</Text>
-            </Card>
-          ))}
+                  <Text size="sm">{incident.description}</Text>
+                </Card>
+              ))}
         </Stack>
       </Drawer>
     </Stack>
