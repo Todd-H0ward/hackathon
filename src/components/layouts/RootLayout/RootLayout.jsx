@@ -6,10 +6,7 @@ import styles from './RootLayout.module.scss';
 
 const RootLayout = observer(({ className, children }) => {
   return (
-    <AppShell
-      className={clsx(styles.root, className)}
-      padding="md"
-    >
+    <AppShell className={clsx(styles.root, className)}>
       <div>{children}</div>
     </AppShell>
   );
