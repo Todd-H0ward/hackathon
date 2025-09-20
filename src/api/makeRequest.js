@@ -10,7 +10,7 @@ export const makeRequest = ({
   responseType = 'json',
   signal,
 }) => {
-  url = `${import.meta.env.VITE_API_URL + '/api/' + url}`;
+  url = `${import.meta.env.VITE_API_URL + url}`;
 
   if (authToken) {
     const token = localStorage.getItem('accessToken');
