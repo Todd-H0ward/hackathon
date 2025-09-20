@@ -6,6 +6,7 @@ import StyleProvider from './components/providers/StyleProvider.jsx';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import 'leaflet/dist/leaflet.css';
 
 const App = () => {
   return (
