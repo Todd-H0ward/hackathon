@@ -10,7 +10,8 @@ import { Notifications } from '@mantine/notifications';
 
 const StyleProvider = ({ children }) => {
   const theme = createTheme({
-    primaryColor: 'dark',
+    primaryColor: 'blue',
+    primaryShade: 8,
     components: {
       Input: Input.extend({
         defaultProps: {
