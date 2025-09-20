@@ -1,50 +1,29 @@
-import { Card, Group, Text, Badge } from '@mantine/core';
+import { Card, Text, Badge, Title, Group } from '@mantine/core';
 
-const getLevelColor = (level) => {
-  if (level === 'CRITICAL') {
-    return 'red';
-  }
-
-  if (level === 'HIGH') {
-    return 'orange';
-  }
-
-  if (level === 'LOW') {
-    return 'green';
-  }
-
-  return 'yellow';
-};
-
-const NewsCard = ({ incident }) => {
-  const statusColor = incident.status === 'NEW' ? 'blue' : 'gray'; // Пример для статуса
-  const levelColor = getLevelColor(incident.color);
-
-  const formatDate = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  };
+const NewsCard = ({ news }) => {
+  const formattedDate = new Date(news.ts).toLocaleString();
 
   return (
-    <Card key={incident.id} shadow="sm" padding="lg" withBorder>
-      <Group justify="space-between" mb="xs">
-        <Text fw={500}>{incident.kind}</Text>
-        <Badge color={statusColor}>{incident.status}</Badge>
+    <Card shadow="sm" padding="lg" radius="md" withBorder>
+      <Title order={3}>{news.title}</Title>
+      <Text size="sm" color="dimmed">
+        {formattedDate}
+      </Text>
+      <Text mt="sm">{news.body}</Text>
+      <Group position="apart" mt="md">
+        <Badge color="blue">{news.regionCode}</Badge>
+        <Badge color="orange">{news.source}</Badge>
       </Group>
-
-      <Text size="sm" c="dimmed">
-        {formatDate(incident.ts)} | {incident.originRegion}
-      </Text>
-
-      <Text size="sm" mt="sm" c={levelColor}>
-        Уровень серьезности: {incident.level}
-      </Text>
-
-      <Text size="sm">Причина: {incident.reason || 'Не указана'}</Text>
-
-      <Text size="sm" c="dimmed">
-        Координаты: {incident.lat}, {incident.lng}
-      </Text>
+      {news.incidentExternalId && (
+        <Text size="xs" c="dimmed" mt="sm">
+          Incident ID: {news.incidentExternalId}
+        </Text>
+      )}
+      {news.status && (
+        <Text size="xs" c="dimmed" mt="sm">
+          Status: {news.status}
+        </Text>
+      )}
     </Card>
   );
 };

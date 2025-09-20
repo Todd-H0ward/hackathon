@@ -1,19 +1,32 @@
 import { useState, useEffect } from 'react';
-import { Button, Drawer, Group, Text, Stack, Center } from '@mantine/core';
+import {
+  Button,
+  Drawer,
+  Group,
+  Text,
+  Stack,
+  Center,
+  Tabs,
+} from '@mantine/core';
 import clsx from 'clsx';
 import SkeletonCard from '@/components/commons/SkeletonCard/SkeletonCard.jsx';
 
 import styles from './NewsDrawer.module.scss';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
-import NewsCard from '@/components/commons/NewsCard/index.js';
+import IncidentCard from '@/components/commons/IncidentCard/index.js';
+import NewsCard from '@/components/commons/NewsCard/NewsCard.jsx';
+import RegionDropdown from '@/components/commons/RegionDropdown/RegionDropdown.jsx';
 
 const NewsDrawer = observer(() => {
-  const { fetchIncidents, isLoading, incidents } = useStore().incidents;
+  const incidentsStore = useStore().incidents;
+  const newsStore = useStore().news;
   const [opened, setOpened] = useState(false);
+  const [tabValue, setTabValue] = useState('incidents');
 
   useEffect(() => {
-    fetchIncidents();
+    incidentsStore.fetchIncidents();
+    newsStore.fetchNews();
   }, []);
 
   return (
@@ -36,19 +49,51 @@ const NewsDrawer = observer(() => {
         size="xl"
         position="right"
       >
-        <Stack gap="md">
-          {isLoading ? (
-            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-          ) : incidents.length === 0 ? (
-            <Center py="lg">
-              <Text c="dimmed">Нет происшествий</Text>
-            </Center>
-          ) : (
-            incidents.map((incident) => (
-              <NewsCard key={incident.id} incident={incident} />
-            ))
-          )}
-        </Stack>
+        <Tabs variant="pills" value={tabValue} onChange={setTabValue}>
+          <Tabs.List className={styles.list}>
+            <Tabs.Tab className={styles.items} value="incidents">
+              Инциденты
+            </Tabs.Tab>
+            <Tabs.Tab className={styles.items} value="regionNews">
+              Новости региона
+            </Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="incidents">
+            <Stack gap="md">
+              {incidentsStore.isLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))
+              ) : incidentsStore.incidents.length === 0 ? (
+                <Center py="lg">
+                  <Text c="dimmed">Нет происшествий</Text>
+                </Center>
+              ) : (
+                incidentsStore.incidents.map((incident) => (
+                  <IncidentCard key={incident.id} incident={incident} />
+                ))
+              )}
+            </Stack>
+          </Tabs.Panel>
+          <Tabs.Panel value="regionNews">
+            <Stack gap="md">
+              <RegionDropdown />
+              {newsStore.isLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <SkeletonCard key={i} />
+                ))
+              ) : newsStore.news.length === 0 ? (
+                <Center py="lg">
+                  <Text c="dimmed">Нет новостей</Text>
+                </Center>
+              ) : (
+                newsStore.news.map((news) => (
+                  <NewsCard key={news.id} news={news} />
+                ))
+              )}
+            </Stack>
+          </Tabs.Panel>
+        </Tabs>
       </Drawer>
     </Stack>
   );

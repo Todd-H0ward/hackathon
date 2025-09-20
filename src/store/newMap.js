@@ -1,5 +1,5 @@
 import { makeAutoObservable, observable, values } from 'mobx';
-import NewsService from '@/api/NewsService.js';
+import NewsService from '@/api/IncidentsService.js';
 import MapService from '@/api/MapService.js';
 
 export class NewMapStore {

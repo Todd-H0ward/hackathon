@@ -1,16 +1,9 @@
 import { makeRequest } from '@/api/makeRequest.js';
 
 class NewsService {
-  fetchNews(minLat, maxLat, minLng, maxLng, since) {
+  fetchNews(region) {
     return makeRequest({
-      url: '/node-c/api/public/incidents',
-      params: {
-        minLat,
-        maxLat,
-        minLng,
-        maxLng,
-        since,
-      },
+      url: `/public/news?region=${region}`,
     });
   }
 }

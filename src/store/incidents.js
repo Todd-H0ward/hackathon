@@ -1,5 +1,6 @@
 import { makeAutoObservable, observable, values } from 'mobx';
-import NewsService from '@/api/NewsService.js';
+import NewsService from '@/api/IncidentsService.js';
+import IncidentsService from '@/api/IncidentsService.js';
 
 export class IncidentStore {
   _incidents = observable.map();
@@ -33,7 +34,7 @@ export class IncidentStore {
   fetchIncidents = async () => {
     this.setIsLoading(true);
 
-    const response = await NewsService.fetchNews(
+    const response = await IncidentsService.fetchIncidents(
       this._minLat,
       this._maxLat,
       this._minLng,

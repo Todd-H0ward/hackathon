@@ -3,7 +3,7 @@ import { makeRequest } from '@/api/makeRequest.js';
 class MapService {
   fetchPlaces(region) {
     return makeRequest({
-      url: '/node-c/api/public/places',
+      url: '/public/places',
       params: {
         region,
       },

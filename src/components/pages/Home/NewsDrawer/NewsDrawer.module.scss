@@ -12,3 +12,13 @@
 .drawer {
   z-index: 10000;
 }
+
+.list {
+  display: flex;
+  margin: 10px 0;
+}
+
+.items {
+  padding: 15px 20px;
+  flex: 1 1 auto;
+}
