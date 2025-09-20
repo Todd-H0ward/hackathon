@@ -31,7 +31,7 @@ const NewsDrawer = observer(() => {
 
   return (
     <Stack className={styles.root}>
-      <Group>
+      {!    opened && <Group>
         <Button
           className={clsx(styles.drawerButton)}
           onClick={() => setOpened(true)}
@@ -39,6 +39,7 @@ const NewsDrawer = observer(() => {
           Актуальные происшествия
         </Button>
       </Group>
+      }
 
       <Drawer
         className={styles.drawer}
@@ -70,7 +71,7 @@ const NewsDrawer = observer(() => {
                 </Center>
               ) : (
                 incidentsStore.incidents.map((incident) => (
-                  <IncidentCard key={incident.id} incident={incident} />
+                  <IncidentCard key={incident.id} incident={incident} setOpened={setOpened} />
                 ))
               )}
               <Button onClick={incidentsStore.loadNextPage} variant="outline">
