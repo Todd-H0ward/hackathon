@@ -46,7 +46,7 @@ const NewsDrawer = () => {
   }, []);
 
   return (
-    <Stack>
+    <Stack className={styles.root}>
       <Group>
         <Button
           className={clsx(styles.drawerButton)}
@@ -57,6 +57,7 @@ const NewsDrawer = () => {
       </Group>
 
       <Drawer
+        className={styles.drawer}
         opened={opened}
         onClose={() => setOpened(false)}
         title="Новости происшествий и ЧС"
