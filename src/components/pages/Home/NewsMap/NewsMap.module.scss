@@ -3,28 +3,37 @@
   width: 100%;
 }
 
-.pulse .circle {
-  width: 60px;
-  height: 60px;
+.circle {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  animation: pulse 2s infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
+  position: relative;
+}
+
+.circle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: inherit;
+  transform: translate(-50%, -50%);
+  opacity: 0.6;
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
   0% {
-    transform: scale(1);
-    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
   }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.5;
+  70% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
   }
   100% {
-    transform: scale(1);
-    opacity: 1;
+    opacity: 0;
   }
 }
