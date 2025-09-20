@@ -34,6 +34,42 @@ const incidents = [
       'Дорожно-транспортное происшествие с участием двух автомобилей.',
     city: 'Санкт-Петербург',
   },
+  {
+    id: 3,
+    title: 'Наводнение в городе',
+    status: 'Подтверждено',
+    dangerLevel: 'Низкий',
+    time: '2025-09-19 15:00',
+    description: 'Подтопление улиц после сильного дождя.',
+    city: 'Казань',
+  },
+  {
+    id: 4,
+    title: 'Газовая утечка',
+    status: 'Подтверждено',
+    dangerLevel: 'Высокий',
+    time: '2025-09-18 21:30',
+    description: 'Обнаружена утечка газа в жилом доме.',
+    city: 'Екатеринбург',
+  },
+  {
+    id: 5,
+    title: 'Пожар в торговом центре',
+    status: 'В обработке',
+    dangerLevel: 'Средний',
+    time: '2025-09-20 11:10',
+    description: 'Загорелась проводка в торговом центре.',
+    city: 'Новосибирск',
+  },
+  {
+    id: 6,
+    title: 'ДТП с автобусом',
+    status: 'Подтверждено',
+    dangerLevel: 'Низкий',
+    time: '2025-09-17 07:15',
+    description: 'Авария с участием автобуса и легкового автомобиля.',
+    city: 'Владивосток',
+  },
 ];
 
 const NewsDrawer = () => {
@@ -41,6 +77,7 @@ const NewsDrawer = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [sortBy, setSortBy] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 1500);
@@ -48,19 +85,25 @@ const NewsDrawer = () => {
   }, []);
 
   const sortedIncidents = useMemo(() => {
-    if (!sortBy) return incidents;
-
     const data = [...incidents];
+
     if (sortBy === 'time') {
-      data.sort(
-        (a, b) => new Date(b.time).getTime() - new Date(a.time).getTime(),
+      data.sort((a, b) =>
+        sortOrder === 'desc'
+          ? new Date(b.time).getTime() - new Date(a.time).getTime()
+          : new Date(a.time).getTime() - new Date(b.time).getTime(),
       );
     } else if (sortBy === 'danger') {
       const rank = { Высокий: 3, Средний: 2, Низкий: 1 };
-      data.sort((a, b) => rank[b.dangerLevel] - rank[a.dangerLevel]);
+      data.sort((a, b) =>
+        sortOrder === 'desc'
+          ? rank[b.dangerLevel] - rank[a.dangerLevel]
+          : rank[a.dangerLevel] - rank[b.dangerLevel],
+      );
     }
+
     return data;
-  }, [sortBy]);
+  }, [sortBy, sortOrder]);
 
   return (
     <Stack className={styles.root}>
@@ -82,19 +125,32 @@ const NewsDrawer = () => {
         size="xl"
         position="right"
       >
-        <Select
-          m="15px 0 30px 0"
-          w={180}
-          label="Сортировать по"
-          placeholder="Сортировка по"
-          data={[
-            { value: 'time', label: 'Времени' },
-            { value: 'danger', label: 'Опасности' },
-          ]}
-          value={sortBy}
-          onChange={setSortBy}
-          clearable
-        />
+        <Group m="15px 0 30px 0" align="flex-end">
+          <Select
+            w={180}
+            label="Сортировать по"
+            placeholder="Поле сортировки"
+            data={[
+              { value: 'time', label: 'Времени' },
+              { value: 'danger', label: 'Опасности' },
+            ]}
+            value={sortBy}
+            onChange={setSortBy}
+            clearable
+          />
+
+          <Select
+            w={160}
+            label="Порядок"
+            placeholder="Выберите"
+            data={[
+              { value: 'asc', label: 'Возрастание' },
+              { value: 'desc', label: 'Убывание' },
+            ]}
+            value={sortOrder}
+            onChange={setSortOrder}
+          />
+        </Group>
 
         <Stack gap="md">
           {isLoading ? (
