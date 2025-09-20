@@ -5,9 +5,10 @@ import { Card, Text, Title, Badge, Loader } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
 import ReactDOMServer from 'react-dom/server';
-import styles from './NewsMap.module.scss';
 import Shelter from '@/components/icons/Shelter';
 import Pharmacy from '@/components/icons/Pharmacy';
+
+import styles from './NewsMap.module.scss';
 
 const getCustomIcon = (type) => {
   let iconSvg;
@@ -78,7 +79,9 @@ const NewsMap = observer(() => {
                   </Text>
                   <Text size="sm">
                     <strong>Тип:</strong>{' '}
-                    <Badge color={place.type === 'SHELTER' ? 'blue' : 'green'}>
+                    <Badge
+                      color={place.type === 'SHELTER' ? 'blue.7' : 'green.7'}
+                    >
                       {place.type}
                     </Badge>
                   </Text>
