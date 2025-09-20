@@ -1,16 +1,16 @@
 import { makeAutoObservable } from 'mobx';
 import { AuthStore } from './auth.js';
-import { NewsStore } from '@/store/news.js';
+import { IncidentStore } from '@/store/incidents.js';
 import { NewMapStore } from '@/store/newMap.js';
 
 class Store {
   auth;
-  news;
+  incidents;
   newsMap;
 
   constructor() {
     this.auth = new AuthStore();
-    this.news = new NewsStore();
+    this.incidents = new IncidentStore();
     this.newsMap = new NewMapStore();
 
     makeAutoObservable(this);

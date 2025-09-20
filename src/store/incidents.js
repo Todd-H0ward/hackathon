@@ -1,13 +1,13 @@
 import { makeAutoObservable, observable, values } from 'mobx';
 import NewsService from '@/api/NewsService.js';
 
-export class NewsStore {
-  _news = observable.map();
+export class IncidentStore {
+  _incidents = observable.map();
   _isLoading = false;
-  _minLat = 55;
-  _maxLat = 57;
-  _minLng = 36;
-  _maxLng = 38;
+  _minLat = 30;
+  _maxLat = 60;
+  _minLng = 30;
+  _maxLng = 60;
   _since = 0;
 
   constructor() {
@@ -18,19 +18,19 @@ export class NewsStore {
     return this._isLoading;
   }
 
-  get news() {
-    return values(this._news);
+  get incidents() {
+    return values(this._incidents);
   }
 
   setIsLoading(isLoading) {
     this._isLoading = isLoading;
   }
 
-  setNews(news) {
-    news.forEach((newsItem) => this._news.set(newsItem.id, newsItem));
+  setIncidents(incidents) {
+    incidents.forEach((incident) => this._incidents.set(incident.id, incident));
   }
 
-  fetchNews = async () => {
+  fetchIncidents = async () => {
     this.setIsLoading(true);
 
     const response = await NewsService.fetchNews(
@@ -42,7 +42,7 @@ export class NewsStore {
     );
 
     if ('data' in response) {
-      this.setNews(response.data);
+      this.setIncidents(response.data);
     }
 
     this.setIsLoading(false);

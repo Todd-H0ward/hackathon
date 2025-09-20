@@ -1,12 +1,16 @@
+import { observer } from 'mobx-react-lite';
 import { Card, Text, Group, Stack } from '@mantine/core';
+import { useStore } from '@/hooks/useStore.js'; // твой хук
 import styles from './Statistics.module.scss';
 
-const total = 120;
-const high = 30;
-const medium = 50;
-const low = 40;
+const Statistics = observer(() => {
+  const { incidents } = useStore().incidents;
 
-const Statistics = () => {
+  const total = incidents.length;
+  const high = incidents.filter((i) => i.level === 'CRITICAL').length;
+  const medium = incidents.filter((i) => i.level === 'MEDIUM').length;
+  const low = incidents.filter((i) => i.level === 'LOW').length;
+
   return (
     <Card className={styles.root} shadow="sm" padding="sm" withBorder>
       <Stack gap="xs">
@@ -49,6 +53,6 @@ const Statistics = () => {
       </Stack>
     </Card>
   );
-};
+});
 
 export default Statistics;

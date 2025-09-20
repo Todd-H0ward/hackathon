@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button, Drawer, Group, Text, Stack, Center } from '@mantine/core';
 import clsx from 'clsx';
-import SkeletonCard from '@/components/commons/SkeletonCard/SkeletonCard';
+import SkeletonCard from '@/components/commons/SkeletonCard/SkeletonCard.jsx';
 
 import styles from './NewsDrawer.module.scss';
 import { observer } from 'mobx-react-lite';
@@ -9,11 +9,11 @@ import { useStore } from '@/hooks/useStore.js';
 import NewsCard from '@/components/commons/NewsCard/index.js';
 
 const NewsDrawer = observer(() => {
-  const { fetchNews, isLoading, news } = useStore().news;
+  const { fetchIncidents, isLoading, incidents } = useStore().incidents;
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
-    fetchNews();
+    fetchIncidents();
   }, []);
 
   return (
@@ -39,12 +39,12 @@ const NewsDrawer = observer(() => {
         <Stack gap="md">
           {isLoading ? (
             Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} />)
-          ) : news.length === 0 ? (
+          ) : incidents.length === 0 ? (
             <Center py="lg">
               <Text c="dimmed">Нет происшествий</Text>
             </Center>
           ) : (
-            news.map((incident) => (
+            incidents.map((incident) => (
               <NewsCard key={incident.id} incident={incident} />
             ))
           )}
