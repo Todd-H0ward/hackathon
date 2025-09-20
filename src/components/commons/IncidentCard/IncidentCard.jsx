@@ -1,29 +1,26 @@
 import { Card, Group, Text, Badge, Button } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
-import { useState } from 'react';
 import { useStore } from '@/hooks/useStore.js';
 
 const getLevelColor = (level) => {
-  if (level === 'CRITICAL') {
-    return 'red';
+  if (level === 'HIGH') {
+    return 'red.7';
   }
 
-  if (level === 'HIGH') {
-    return 'orange';
+  if (level === 'MEDIUM') {
+    return 'orange.7';
   }
 
   if (level === 'LOW') {
-    return 'green';
+    return 'green.7';
   }
-
-  return 'yellow';
 };
 
 const IncidentCard = observer(({ incident, setOpened }) => {
   const {setLocation} = useStore().newsMap;
 
-  const statusColor = incident.status === 'NEW' ? 'blue' : 'gray'; // Пример для статуса
-  const levelColor = getLevelColor(incident.color);
+  const statusColor = incident.status === 'NEW' ? 'green.7' : 'gray.6';
+  const levelColor = getLevelColor(incident.level);
 
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);

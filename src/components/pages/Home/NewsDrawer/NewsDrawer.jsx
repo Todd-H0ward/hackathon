@@ -59,10 +59,11 @@ const NewsDrawer = observer(() => {
               Новости региона
             </Tabs.Tab>
           </Tabs.List>
+
           <Tabs.Panel value="incidents">
             <Stack gap="md">
               {incidentsStore.isLoading ? (
-                Array.from({ length: 3 }).map((_, i) => (
+                Array.from({ length: 6 }).map((_, i) => (
                   <SkeletonCard key={i} />
                 ))
               ) : incidentsStore.incidents.length === 0 ? (
@@ -79,11 +80,12 @@ const NewsDrawer = observer(() => {
               </Button>
             </Stack>
           </Tabs.Panel>
+
           <Tabs.Panel value="regionNews">
             <Stack gap="md">
               <RegionDropdown />
               {newsStore.isLoading ? (
-                Array.from({ length: 3 }).map((_, i) => (
+                Array.from({ length: 6 }).map((_, i) => (
                   <SkeletonCard key={i} />
                 ))
               ) : newsStore.news.length === 0 ? (
