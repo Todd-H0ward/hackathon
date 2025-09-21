@@ -39,7 +39,7 @@ const StyleProvider = ({ children }) => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       {children}
-      <Notifications />
+      <Notifications position="bottom-center" />
     </MantineProvider>
   );
 };
