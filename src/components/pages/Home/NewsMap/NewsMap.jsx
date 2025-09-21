@@ -27,7 +27,7 @@ const LocationUpdater = ({ location }) => {
 };
 
 const NewsMap = observer(() => {
-  const { newsMap, incidents, camera } = useStore();
+  const { newsMap, incidents, camera, sensors } = useStore();
 
   useEffect(() => {
     newsMap.fetchPlaces();
@@ -69,6 +69,10 @@ const NewsMap = observer(() => {
 
           {camera.cameras.map((camera) => (
             <CameraMarker key={`camera-${camera.id}`} camera={camera} />
+          ))}
+
+          {sensors.sensors.map((sensor) => (
+            <SensorMarker sensor={sensor} />
           ))}
         </MapContainer>
       )}
