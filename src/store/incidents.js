@@ -34,6 +34,18 @@ export class IncidentStore {
 
   setIncidents(incidents) {
     incidents.forEach((incident) => this._incidents.set(incident.id, incident));
+
+    // incidents.forEach((incident) => {
+    //   if (!this._incidents.has(incident.id)) {
+    //     this._incidents.set(incident.id, incident);
+    //
+    //     setTimeout(() => {
+    //       this._incidents.delete(incident.id);
+    //     }, 15000);
+    //   } else {
+    //     this._incidents.set(incident.id, incident);
+    //   }
+    // });
   }
 
   fetchIncidents = async () => {

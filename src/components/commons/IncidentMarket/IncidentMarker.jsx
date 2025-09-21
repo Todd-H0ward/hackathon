@@ -10,7 +10,7 @@ import styles from './IncidentMarker.module.scss';
 const IncidentMarker = ({ incident }) => {
   return (
     <Marker
-      position={[incident.lat, incident.lng]}
+      position={[incident.lat + 0.1, incident.lng]}
       icon={getIncidentIcon(incident.kind, incident.level)}
       className={styles.root}
       zIndexOffset={100}
