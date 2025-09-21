@@ -10,13 +10,13 @@ export const getIncidentIcon = (kind, level) => {
 
   switch (level) {
     case 'HIGH':
-      iconColor = '#ff6b6b';
+      iconColor = '#f03e3e';
       break;
     case 'MEDIUM':
-      iconColor = '#fcc419';
+      iconColor = '#f76707';
       break;
     case 'LOW':
-      iconColor = '#51cf66';
+      iconColor = '#37b24d';
       break;
     default:
       iconColor = '#868e96';
@@ -49,6 +49,6 @@ export const getIncidentIcon = (kind, level) => {
     className: '',
     html: iconSvg,
     iconSize: [32, 32],
-    iconAnchor: [16, 32],
+    iconAnchor: [16, 20],
   });
 };
