@@ -2,8 +2,8 @@ import { Marker, Popup } from 'react-leaflet';
 import { getIncidentIcon } from '@/helpers/getIncidentIcon.jsx';
 import { getIncidentKindText } from '@/helpers/getIncidentKindText.js';
 import { getIncidentLevelText } from '@/helpers/getIncidentLevelText.js';
-import { AlertTriangle, MapPin } from 'lucide-react';
-import { Badge, Group, Stack, Text, Title } from '@mantine/core';
+import { AlertTriangle, MapPin, Clock, Shield } from 'lucide-react';
+import { Badge, Group, Stack, Text, Title, Divider } from '@mantine/core';
 
 const IncidentMarker = ({ incident }) => {
   return (
@@ -12,9 +12,9 @@ const IncidentMarker = ({ incident }) => {
       icon={getIncidentIcon(incident.kind, incident.level)}
     >
       <Popup>
-        <Stack gap="md" style={{ minWidth: 220 }}>
+        <Stack gap="sm" style={{ minWidth: 280 }}>
           <Group justify="space-between" wrap="nowrap">
-            <Title order={5} m={0} style={{ flex: 1 }}>
+            <Title order={5} m={0}>
               {getIncidentKindText(incident.kind)}
             </Title>
             <Badge
@@ -25,43 +25,46 @@ const IncidentMarker = ({ incident }) => {
                     ? 'yellow.7'
                     : 'green.7'
               }
-              variant="light"
+              variant="filled"
+              radius="sm"
             >
               {getIncidentLevelText(incident.level)}
             </Badge>
           </Group>
 
-          <Group gap={6}>
+          <Divider />
+
+          <Group gap={6} align="center">
             <MapPin size={16} />
             <Text size="sm" m={0}>
-              Координаты: {incident.lat.toFixed(4)}, {incident.lng.toFixed(4)}
+              {incident.lat.toFixed(4)}, {incident.lng.toFixed(4)}
             </Text>
           </Group>
 
-          <Group gap={6}>
+          <Group gap={6} align="center">
             <AlertTriangle size={16} />
             <Text size="sm" m={0}>
-              Причина: {incident.reason}
+              {incident.reason || 'Не указана'}
             </Text>
           </Group>
 
-          <Group gap={6}>
+          <Group gap={6} align="center">
+            <Clock size={16} />
             <Text size="sm" m={0}>
-              Время: {new Date(incident.ts).toLocaleString()}
+              {new Date(incident.ts).toLocaleString()}
             </Text>
           </Group>
 
-          <Group gap={6}>
+          <Group gap={6} align="center">
+            <Shield size={16} />
             <Text size="sm" m={0}>
-              Статус: {incident.status === 'NEW' ? 'Новый' : incident.status}
+              {incident.status === 'NEW' ? 'Новый' : incident.status}
             </Text>
           </Group>
 
-          <Group gap={6}>
-            <Text size="sm" m={0}>
-              Регион: {incident.regionCode}
-            </Text>
-          </Group>
+          <Text size="sm" c="dimmed" m={0}>
+            {incident.regionCode}
+          </Text>
         </Stack>
       </Popup>
     </Marker>
