@@ -17,6 +17,7 @@ import { MapPin, Users, Globe, AlertTriangle } from 'lucide-react';
 import { getIncidentKindText } from '@/helpers/getIncidentKindText.js';
 import { getIncidentLevelText } from '@/helpers/getIncidentLevelText.js';
 import { getIncidentIcon } from '@/helpers/getIncidentIcon.jsx';
+import SensorMarker from '@/components/commons/SensorMarker';
 
 import styles from './NewsMap.module.scss';
 
@@ -51,7 +52,6 @@ const getPlaceIcon = (type) => {
   });
 };
 
-
 const LocationUpdater = ({ location }) => {
   const map = useMapEvents({
     locationfound: (e) => {
@@ -69,7 +69,7 @@ const LocationUpdater = ({ location }) => {
 };
 
 const NewsMap = observer(() => {
-  const { newsMap, incidents} = useStore();
+  const { newsMap, incidents, sensors } = useStore();
 
   useEffect(() => {
     newsMap.fetchPlaces();
@@ -158,8 +158,11 @@ const NewsMap = observer(() => {
                     </Title>
                     <Badge
                       color={
-                        incident.level === 'HIGH' ? 'red.7' :
-                          incident.level === 'MEDIUM' ? 'yellow.7' : 'green.7'
+                        incident.level === 'HIGH'
+                          ? 'red.7'
+                          : incident.level === 'MEDIUM'
+                            ? 'yellow.7'
+                            : 'green.7'
                       }
                       variant="light"
                     >
@@ -170,7 +173,8 @@ const NewsMap = observer(() => {
                   <Group gap={6}>
                     <MapPin size={16} />
                     <Text size="sm" m={0}>
-                      Координаты: {incident.lat.toFixed(4)}, {incident.lng.toFixed(4)}
+                      Координаты: {incident.lat.toFixed(4)},{' '}
+                      {incident.lng.toFixed(4)}
                     </Text>
                   </Group>
 
@@ -189,7 +193,8 @@ const NewsMap = observer(() => {
 
                   <Group gap={6}>
                     <Text size="sm" m={0}>
-                      Статус: {incident.status === 'NEW' ? 'Новый' : incident.status}
+                      Статус:{' '}
+                      {incident.status === 'NEW' ? 'Новый' : incident.status}
                     </Text>
                   </Group>
 
@@ -201,6 +206,10 @@ const NewsMap = observer(() => {
                 </Stack>
               </Popup>
             </Marker>
+          ))}
+
+          {sensors.sensors.map((sensor) => (
+            <SensorMarker sensor={sensor} />
           ))}
         </MapContainer>
       )}

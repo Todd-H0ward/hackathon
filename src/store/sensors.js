@@ -1,7 +1,7 @@
 import { makeAutoObservable, observable, values } from 'mobx';
 import IncidentsService from '@/api/IncidentsService.js';
 
-export class NewsStore {
+export class SensorsStore {
   _sensors = observable.map();
   _isLoading = false;
 
@@ -22,7 +22,7 @@ export class NewsStore {
   }
 
   setSensors(sensors) {
-    sensors.forEach((sensor) => this._news.set(sensor.id, sensor));
+    sensors.forEach((sensor) => this._sensors.set(sensor.id, sensor));
   }
 
   fetchSensors = async () => {
