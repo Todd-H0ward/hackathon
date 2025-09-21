@@ -13,12 +13,12 @@ import { useStore } from '@/hooks/useStore.js';
 import ReactDOMServer from 'react-dom/server';
 import Shelter from '@/components/icons/Shelter';
 import Pharmacy from '@/components/icons/Pharmacy';
-import { MapPin, Users, Globe, AlertTriangle, Radiation, Flame, Droplets, Cloud } from 'lucide-react';
-
-import styles from './NewsMap.module.scss';
+import { MapPin, Users, Globe, AlertTriangle } from 'lucide-react';
 import { getIncidentKindText } from '@/helpers/getIncidentKindText.js';
 import { getIncidentLevelText } from '@/helpers/getIncidentLevelText.js';
 import { getIncidentIcon } from '@/helpers/getIncidentIcon.jsx';
+
+import styles from './NewsMap.module.scss';
 
 const getPlaceIcon = (type) => {
   let iconSvg;
