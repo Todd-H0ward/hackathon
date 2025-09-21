@@ -2,11 +2,11 @@ import L from 'leaflet';
 import ReactDOMServer from 'react-dom/server';
 import Shelter from '@/components/icons/Shelter';
 import Pharmacy from '@/components/icons/Pharmacy';
-
-import styles from './PlaceMarker.module.scss';
 import { Marker, Popup } from 'react-leaflet';
 import { Badge, Group, Stack, Text, Title } from '@mantine/core';
 import { Globe, MapPin, Users } from 'lucide-react';
+
+import styles from './PlaceMarker.module.scss';
 
 const getPlaceIcon = (type) => {
   let iconSvg;
@@ -35,7 +35,7 @@ const getPlaceIcon = (type) => {
     className: '',
     html: iconSvg,
     iconSize: [32, 32],
-    iconAnchor: [16, 32],
+    iconAnchor: [17, 22],
   });
 };
 
