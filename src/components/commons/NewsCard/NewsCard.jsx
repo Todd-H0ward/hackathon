@@ -3,6 +3,12 @@ import { Card, Text, Badge, Title, Group } from '@mantine/core';
 const NewsCard = ({ news }) => {
   const formattedDate = new Date(news.ts).toLocaleString();
 
+  const getStatusText = (status) => {
+    if (status === 'PUBLISHED') return 'опубликовано';
+    if (status === 'HIDDEN') return 'скрыто';
+    return status;
+  };
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Title order={3}>{news.title}</Title>
@@ -21,7 +27,7 @@ const NewsCard = ({ news }) => {
       )}
       {news.status && (
         <Text size="xs" c="dimmed" mt="sm">
-          Status: {news.status}
+          Статус: {getStatusText(news.status)}
         </Text>
       )}
     </Card>
