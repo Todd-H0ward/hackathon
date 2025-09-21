@@ -4,12 +4,15 @@ import { getIncidentKindText } from '@/helpers/getIncidentKindText.js';
 import { getIncidentLevelText } from '@/helpers/getIncidentLevelText.js';
 import { AlertTriangle, MapPin } from 'lucide-react';
 import { Badge, Group, Stack, Text, Title } from '@mantine/core';
+import styles from './IncidentMarker.module.scss';
 
 const IncidentMarker = ({ incident }) => {
   return (
     <Marker
       position={[incident.lat, incident.lng]}
       icon={getIncidentIcon(incident.kind, incident.level)}
+      className={styles.root}
+      zIndexOffset={100}
     >
       <Popup>
         <Stack gap="md" style={{ minWidth: 220 }}>

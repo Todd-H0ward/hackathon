@@ -9,18 +9,6 @@ const NewsCard = ({ news }) => {
     return status;
   };
 
-  const getIncidentKindText = (kind) => {
-    const map = {
-      FIRE: 'Пожар',
-      FLOOD: 'Наводнение',
-      EARTHQUAKE: 'Землетрясение',
-      TERROR: 'Теракт',
-      ACCIDENT: 'Авария',
-      UNKNOWN: 'Неизвестное событие',
-    };
-    return map[kind] || kind;
-  };
-
   const getIncidentLevelText = (level) => {
     const map = {
       CRITICAL: 'Критический',
