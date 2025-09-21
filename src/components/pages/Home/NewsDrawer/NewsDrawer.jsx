@@ -31,15 +31,16 @@ const NewsDrawer = observer(() => {
 
   return (
     <Stack className={styles.root}>
-      {!    opened && <Group>
-        <Button
-          className={clsx(styles.drawerButton)}
-          onClick={() => setOpened(true)}
-        >
-          Актуальные происшествия
-        </Button>
-      </Group>
-      }
+      {!opened && (
+        <Group>
+          <Button
+            className={clsx(styles.drawerButton)}
+            onClick={() => setOpened(true)}
+          >
+            Актуальные происшествия
+          </Button>
+        </Group>
+      )}
 
       <Drawer
         className={styles.drawer}
@@ -71,9 +72,16 @@ const NewsDrawer = observer(() => {
                   <Text c="dimmed">Нет происшествий</Text>
                 </Center>
               ) : (
-                incidentsStore.incidents.map((incident) => (
-                  <IncidentCard key={incident.id} incident={incident} setOpened={setOpened} />
-                ))
+                incidentsStore.incidents
+                  .slice()
+                  .sort((a, b) => new Date(b.ts) - new Date(a.ts))
+                  .map((incident) => (
+                    <IncidentCard
+                      key={incident.id}
+                      incident={incident}
+                      setOpened={setOpened}
+                    />
+                  ))
               )}
               <Button onClick={incidentsStore.loadNextPage} variant="outline">
                 Загрузить ещё
@@ -93,9 +101,10 @@ const NewsDrawer = observer(() => {
                   <Text c="dimmed">Нет новостей</Text>
                 </Center>
               ) : (
-                newsStore.news.map((news) => (
-                  <NewsCard key={news.id} news={news} />
-                ))
+                newsStore.news
+                  .slice()
+                  .sort((a, b) => new Date(b.ts) - new Date(a.ts))
+                  .map((news) => <NewsCard key={news.id} news={news} />)
               )}
               <Button onClick={newsStore.loadNextPage} variant="outline">
                 Загрузить ещё
