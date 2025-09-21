@@ -9,6 +9,7 @@ import PlaceMarker from '@/components/commons/PlaceMarker/PlaceMarker.jsx';
 import IncidentMarker from '@/components/commons/IncidentMarket/IncidentMarker.jsx';
 import styles from './NewsMap.module.scss';
 import CameraMarker from '@/components/commons/CameraMarker/CameraMarker.jsx';
+import SensorMarker from '@/components/commons/SensorMarker/index.js';
 
 const LocationUpdater = ({ location }) => {
   const map = useMapEvents({
@@ -33,6 +34,7 @@ const NewsMap = observer(() => {
     newsMap.fetchPlaces();
     incidents.fetchIncidents();
     camera.fetchCameras();
+    sensors.fetchSensors();
   }, []);
 
   const isLoading =
@@ -72,7 +74,7 @@ const NewsMap = observer(() => {
           ))}
 
           {sensors.sensors.map((sensor) => (
-            <SensorMarker sensor={sensor} />
+            <SensorMarker key={sensor.id} sensor={sensor} />
           ))}
         </MapContainer>
       )}

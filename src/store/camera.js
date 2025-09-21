@@ -4,6 +4,7 @@ import CameraService from '@/api/CameraService.js';
 export class CameraStore {
   _cameras = observable.map();
   _isLoading = false;
+  _region = '';
 
   constructor() {
     makeAutoObservable(this);
@@ -27,10 +28,10 @@ export class CameraStore {
     });
   }
 
-  fetchCameras() {
+  fetchCameras = async () => {
     this.setIsLoading(true);
 
-    const response = CameraService.fetchCameras();
+    const response = await CameraService.fetchCameras(this._region);
 
     console.log(response.data);
 
@@ -39,5 +40,5 @@ export class CameraStore {
     }
 
     this.setIsLoading(false);
-  }
+  };
 }

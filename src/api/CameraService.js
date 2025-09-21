@@ -1,9 +1,9 @@
 import { makeRequest } from '@/api/makeRequest.js';
 
 class CameraService {
-  fetchCameras() {
+  fetchCameras(region) {
     return makeRequest({
-      url: `/public/cameras`,
+      url: `/public/cameras?region=${region}`,
     });
   }
 }

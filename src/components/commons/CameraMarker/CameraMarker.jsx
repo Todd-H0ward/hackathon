@@ -28,9 +28,9 @@ const CameraMarker = ({ camera }) => {
         <Stack gap="md" style={{ minWidth: 220 }}>
           <Group justify="space-between">
             <Title order={5} m={0}>
-              {camera.name}
+              Камера: {camera.name}
             </Title>
-            <Badge color="red.7" variant="light">
+            <Badge color="blue.7" variant="light">
               Камера
             </Badge>
           </Group>
