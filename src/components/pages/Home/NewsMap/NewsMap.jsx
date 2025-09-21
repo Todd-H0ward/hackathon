@@ -35,6 +35,10 @@ const NewsMap = observer(() => {
   const isLoading =
     newsMap.isLoading || incidents.isLoading || camera.isLoading;
 
+  const filteredIncidents = incidents.incidents.filter(
+    (incident) => incident.status !== 'RESOLVED',
+  );
+
   return (
     <>
       {isLoading ? (
@@ -55,7 +59,7 @@ const NewsMap = observer(() => {
             <PlaceMarker key={`place-${place.id}`} place={place} />
           ))}
 
-          {incidents.incidents.map((incident) => (
+          {filteredIncidents.map((incident) => (
             <IncidentMarker
               key={`incident-${incident.id}`}
               incident={incident}
