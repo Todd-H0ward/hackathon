@@ -4,13 +4,12 @@ import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import { useStore } from '@/hooks/useStore.js';
 import { notifications } from '@mantine/notifications';
-import audioSound from "@/audio/notification-sound.mp3"
-import { Button } from '@mantine/core';
+import audioSound from '@/audio/notification-sound.mp3';
 
 const SocketContext = createContext(null);
 
 export const SocketProvider = observer(({ children }) => {
-  const { incidents, newsMap, news } = useStore();
+  const { incidents, newsMap, news, sensors, camera } = useStore();
   const [connected, setConnected] = useState(false);
 
   const stompRef = useRef(null);
@@ -22,7 +21,9 @@ export const SocketProvider = observer(({ children }) => {
 
   const playNotificationSound = () => {
     try {
-      audioRef.current.play().catch(e => console.warn('Не удалось воспроизвести звук:', e));
+      audioRef.current
+        .play()
+        .catch((e) => console.warn('Не удалось воспроизвести звук:', e));
     } catch (e) {
       console.warn('Ошибка воспроизведения звука:', e);
     }
@@ -35,7 +36,7 @@ export const SocketProvider = observer(({ children }) => {
       MEDIUM: 'yellow',
       LOW: 'blue',
       INFO: 'green',
-      default: 'blue'
+      default: 'blue',
     };
 
     notifications.show({
@@ -44,7 +45,7 @@ export const SocketProvider = observer(({ children }) => {
       color: colors[level] || colors.default,
       autoClose: 5000,
       withCloseButton: true,
-      style: { marginTop: '20px' }
+      style: { marginTop: '20px' },
     });
 
     playNotificationSound();
@@ -73,7 +74,6 @@ export const SocketProvider = observer(({ children }) => {
       if (cancelled) return;
       setConnected(true);
 
-
       stomp.subscribe('/topic/incidents', (message) => {
         try {
           const payload = JSON.parse(message.body);
@@ -81,7 +81,7 @@ export const SocketProvider = observer(({ children }) => {
           showNotification(
             `Новый инцидент: ${payload.kind}`,
             `Уровень: ${payload.level}, Регион: ${payload.regionCode}`,
-            payload.level
+            payload.level,
           );
         } catch (e) {
           console.warn('bad incident payload', e);
@@ -95,7 +95,7 @@ export const SocketProvider = observer(({ children }) => {
           showNotification(
             'Новая новость',
             payload.title || 'Получена новая информация',
-            'INFO'
+            'INFO',
           );
         } catch (e) {
           console.warn('bad news payload', e);
@@ -105,14 +105,28 @@ export const SocketProvider = observer(({ children }) => {
       stomp.subscribe('/topic/sensors', (message) => {
         try {
           const sensor = JSON.parse(message.body);
-          console.log('New sensor data:', sensor);
+          sensor.setSensors([sensor]);
           showNotification(
             'Данные сенсора',
             `Получены новые данные от сенсора`,
-            'INFO'
+            'INFO',
           );
         } catch (e) {
           console.warn('bad sensor payload', e);
+        }
+      });
+
+      stomp.subscribe('/topic/camera-alert', (message) => {
+        try {
+          const cameras = JSON.parse(message.body);
+          camera.setCameras([cameras]);
+          showNotification(
+            'Данные о камерах',
+            `Получены новые данные по камерам`,
+            'INFO',
+          );
+        } catch (e) {
+          console.warn('bad camera payload', e);
         }
       });
 
@@ -125,7 +139,7 @@ export const SocketProvider = observer(({ children }) => {
             showNotification(
               `Событие: ${eventData.kind || 'Unknown'}`,
               `Уровень: ${eventData.level}, Статус: ${eventData.status}`,
-              eventData.level
+              eventData.level,
             );
             if (eventData.level) {
               incidents.setIncidents([eventData]);
