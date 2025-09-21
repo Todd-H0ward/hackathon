@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { observer } from 'mobx-react-lite';
@@ -94,7 +94,7 @@ const RegisterPage = observer(() => {
 
           <Group justify="center">
             <Text size="sm" c="dimmed" mt={4}>
-              Уже есть аккаунт?{" "}
+              Уже есть аккаунт?{' '}
               <Anchor component={Link} to={STATIC_LINKS.LOGIN}>
                 Войдите
               </Anchor>
@@ -102,6 +102,14 @@ const RegisterPage = observer(() => {
           </Group>
         </Stack>
       </Paper>
+
+      <Button
+        mt={20}
+        variant="outline"
+        onClick={() => navigate(STATIC_LINKS.HOME)}
+      >
+        На главную
+      </Button>
     </PageWrapper>
   );
 });

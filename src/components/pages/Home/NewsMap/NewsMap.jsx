@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet';
-
 import { Loader } from '@mantine/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '@/hooks/useStore.js';
-
 import PlaceMarker from '@/components/commons/PlaceMarker/PlaceMarker.jsx';
 import IncidentMarker from '@/components/commons/IncidentMarket/IncidentMarker.jsx';
-import styles from './NewsMap.module.scss';
 import CameraMarker from '@/components/commons/CameraMarker/CameraMarker.jsx';
+import SensorMarker from '@/components/commons/SensorMarker';
+
+import styles from './NewsMap.module.scss';
 
 const LocationUpdater = ({ location }) => {
   const map = useMapEvents({
@@ -49,12 +49,10 @@ const NewsMap = observer(() => {
           center={newsMap.location}
           zoom={7}
           className={styles.root}
+          attributionControl={false}
         >
           <LocationUpdater location={newsMap.location} />
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
           {newsMap.places.map((place) => (
             <PlaceMarker key={`place-${place.id}`} place={place} />
@@ -72,7 +70,7 @@ const NewsMap = observer(() => {
           ))}
 
           {sensors.sensors.map((sensor) => (
-            <SensorMarker sensor={sensor} />
+            <SensorMarker key={`sensor-${sensor.id}`} sensor={sensor} />
           ))}
         </MapContainer>
       )}

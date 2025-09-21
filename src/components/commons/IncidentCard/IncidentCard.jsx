@@ -16,8 +16,15 @@ const getLevelColor = (level) => {
   }
 };
 
+const getLevelText = (level) => {
+  if (level === 'HIGH') return 'Высокий';
+  if (level === 'MEDIUM') return 'Средний';
+  if (level === 'LOW') return 'Низкий';
+  return level;
+};
+
 const IncidentCard = observer(({ incident, setOpened }) => {
-  const {setLocation} = useStore().newsMap;
+  const { setLocation } = useStore().newsMap;
 
   const statusColor = incident.status === 'NEW' ? 'green.7' : 'gray.6';
   const levelColor = getLevelColor(incident.level);
@@ -39,7 +46,7 @@ const IncidentCard = observer(({ incident, setOpened }) => {
       </Text>
 
       <Text size="sm" mt="sm" c={levelColor}>
-        Уровень серьезности: {incident.level}
+        Уровень серьезности: {getLevelText(incident.level)}
       </Text>
 
       <Text size="sm">Причина: {incident.reason || 'Не указана'}</Text>
@@ -49,7 +56,7 @@ const IncidentCard = observer(({ incident, setOpened }) => {
         variant="light"
         mt="md"
         onClick={() => {
-          setLocation(incident.lat, incident.lng)
+          setLocation(incident.lat, incident.lng);
           setOpened(false);
         }}
       >

@@ -7,7 +7,7 @@ import {
   Stack,
   Text,
   TextInput,
-  Title
+  Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { observer } from 'mobx-react-lite';
@@ -81,7 +81,11 @@ const LoginPage = observer(() => {
                 {...form.getInputProps('password')}
               />
 
-              <Anchor component={Link} to={STATIC_LINKS.FORGOT_PASSWORD} size="sm">
+              <Anchor
+                component={Link}
+                to={STATIC_LINKS.FORGOT_PASSWORD}
+                size="sm"
+              >
                 Забыли пароль?
               </Anchor>
 
@@ -92,7 +96,7 @@ const LoginPage = observer(() => {
           </form>
 
           <Group justify="center" gap={5}>
-            <Text size="sm" c="dimmed" >
+            <Text size="sm" c="dimmed">
               Нет аккаунта?{' '}
             </Text>
             <Anchor component={Link} to={STATIC_LINKS.REGISTER} size="sm">
@@ -101,6 +105,14 @@ const LoginPage = observer(() => {
           </Group>
         </Stack>
       </Paper>
+
+      <Button
+        mt={20}
+        variant="outline"
+        onClick={() => navigate(STATIC_LINKS.HOME)}
+      >
+        На главную
+      </Button>
     </PageWrapper>
   );
 });
