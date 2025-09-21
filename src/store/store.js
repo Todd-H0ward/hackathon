@@ -4,6 +4,7 @@ import { IncidentStore } from '@/store/incidents.js';
 import { NewMapStore } from '@/store/newMap.js';
 import { NewsStore } from '@/store/news.js';
 import { SensorsStore } from '@/store/sensors.js';
+import { CameraStore } from '@/store/camera.js';
 
 class Store {
   auth;
@@ -11,6 +12,7 @@ class Store {
   newsMap;
   news;
   sensors;
+  camera;
 
   constructor() {
     this.auth = new AuthStore();
@@ -18,6 +20,7 @@ class Store {
     this.newsMap = new NewMapStore();
     this.news = new NewsStore();
     this.sensors = new SensorsStore();
+    this.camera = new CameraStore();
 
     makeAutoObservable(this);
   }
