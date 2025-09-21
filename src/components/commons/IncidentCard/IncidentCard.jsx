@@ -24,7 +24,7 @@ const getLevelText = (level) => {
 };
 
 const IncidentCard = observer(({ incident, setOpened }) => {
-  const { setLocation } = useStore().newsMap;
+  const { setLocation, setZoom } = useStore().newsMap;
 
   const statusColor = incident.status === 'NEW' ? 'green.7' : 'gray.6';
   const levelColor = getLevelColor(incident.level);
@@ -56,8 +56,9 @@ const IncidentCard = observer(({ incident, setOpened }) => {
         variant="light"
         mt="md"
         onClick={() => {
-          setLocation(incident.lat, incident.lng);
           setOpened(false);
+          setLocation(incident.lat, incident.lng);
+          setZoom(25);
         }}
       >
         Координаты: {incident.lat}, {incident.lng}

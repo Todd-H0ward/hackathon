@@ -39,6 +39,7 @@ export const SocketProvider = observer(({ children }) => {
       default: 'blue',
     };
 
+    notifications.cleanQueue();
     notifications.show({
       title,
       message,
@@ -105,7 +106,7 @@ export const SocketProvider = observer(({ children }) => {
       stomp.subscribe('/topic/sensors', (message) => {
         try {
           const sensor = JSON.parse(message.body);
-          sensor.setSensors([sensor]);
+          sensors.setSensors([sensor]);
           showNotification(
             'Данные сенсора',
             `Получены новые данные от сенсора`,
