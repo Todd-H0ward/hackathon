@@ -16,6 +16,7 @@ export const SocketProvider = observer(({ children }) => {
   const sockRef = useRef(null);
   const retryRef = useRef({ timer: null, explicitlyClosed: false });
   const audioRef = useRef(null);
+  const lastNotifsRef = useRef(new Map());
 
   const wsUrl = `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_API_NODE}/ws`;
 
@@ -38,6 +39,14 @@ export const SocketProvider = observer(({ children }) => {
       INFO: 'green',
       default: 'blue',
     };
+
+    const key = `${title}-${message}-${level}`;
+    const now = Date.now();
+    if (lastNotifsRef.current.has(key)) {
+      const lastTime = lastNotifsRef.current.get(key);
+      if (now - lastTime < 3000) return;
+    }
+    lastNotifsRef.current.set(key, now);
 
     notifications.cleanQueue();
     notifications.show({
@@ -67,7 +76,6 @@ export const SocketProvider = observer(({ children }) => {
 
     const stomp = Stomp.over(sock);
     stomp.debug = () => {};
-
     stomp.heartbeat.outgoing = 20000;
     stomp.heartbeat.incoming = 0;
 
@@ -84,9 +92,7 @@ export const SocketProvider = observer(({ children }) => {
             `Уровень: ${payload.level}, Регион: ${payload.regionCode}`,
             payload.level,
           );
-        } catch (e) {
-          console.warn('bad incident payload', e);
-        }
+        } catch {}
       });
 
       stomp.subscribe('/topic/news', (message) => {
@@ -98,9 +104,7 @@ export const SocketProvider = observer(({ children }) => {
             payload.title || 'Получена новая информация',
             'INFO',
           );
-        } catch (e) {
-          console.warn('bad news payload', e);
-        }
+        } catch {}
       });
 
       stomp.subscribe('/topic/sensors', (message) => {
@@ -112,9 +116,7 @@ export const SocketProvider = observer(({ children }) => {
             `Получены новые данные от сенсора`,
             'INFO',
           );
-        } catch (e) {
-          console.warn('bad sensor payload', e);
-        }
+        } catch {}
       });
 
       stomp.subscribe('/topic/camera-alert', (message) => {
@@ -126,15 +128,12 @@ export const SocketProvider = observer(({ children }) => {
             `Получены новые данные по камерам`,
             'INFO',
           );
-        } catch (e) {
-          console.warn('bad camera payload', e);
-        }
+        } catch {}
       });
 
       stomp.subscribe('/topic/public/stream', (message) => {
         try {
           const data = JSON.parse(message.body);
-          console.log('Public stream data:', data);
           if (data.data) {
             const eventData = data.data;
             showNotification(
@@ -146,9 +145,7 @@ export const SocketProvider = observer(({ children }) => {
               incidents.setIncidents([eventData]);
             }
           }
-        } catch (e) {
-          console.warn('bad public stream payload', e);
-        }
+        } catch {}
       });
     };
 
@@ -162,7 +159,6 @@ export const SocketProvider = observer(({ children }) => {
 
     const onError = (err) => {
       if (cancelled) return;
-      console.warn('STOMP error:', err);
       setConnected(false);
       scheduleReconnect();
     };
@@ -176,14 +172,12 @@ export const SocketProvider = observer(({ children }) => {
       cancelled = true;
       retryRef.current.explicitlyClosed = true;
       clearTimeout(retryRef.current.timer);
-
       try {
         stompRef.current?.disconnect(() => setConnected(false));
       } catch {}
       try {
         sockRef.current?.close?.();
       } catch {}
-
       stompRef.current = null;
       sockRef.current = null;
     };
