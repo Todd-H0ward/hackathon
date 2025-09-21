@@ -33,6 +33,7 @@ const NewsMap = observer(() => {
     newsMap.fetchPlaces();
     incidents.fetchIncidents();
     camera.fetchCameras();
+    sensors.fetchSensors();
   }, []);
 
   const isLoading =

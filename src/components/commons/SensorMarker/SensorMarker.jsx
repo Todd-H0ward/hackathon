@@ -1,14 +1,13 @@
-import { getIncidentIcon } from '@/helpers/getIncidentIcon.jsx';
 import { Marker, Popup } from 'react-leaflet';
 import { Badge, Group, Stack, Text, Title } from '@mantine/core';
 import { MapPin } from 'lucide-react';
+import { getSensorIcon } from '@/helpers/getSensorIcon.jsx';
 
 const SensorMarker = ({ sensor }) => {
   return (
     <Marker
-      key={`radiation-${sensor.id}`}
       position={[sensor.lat, sensor.lng]}
-      icon={getIncidentIcon('RADIATION', 'HIGH')}
+      icon={getSensorIcon(sensor.type)}
     >
       <Popup>
         <Stack gap="md" style={{ minWidth: 220 }}>
@@ -16,7 +15,7 @@ const SensorMarker = ({ sensor }) => {
             <Title order={5} m={0} style={{ flex: 1 }}>
               {sensor.name}
             </Title>
-            <Badge color="red.7" variant="light">
+            <Badge color="blue.7" variant="light">
               Радиация
             </Badge>
           </Group>

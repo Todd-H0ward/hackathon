@@ -9,7 +9,7 @@ import styles from './CameraMarker.module.scss';
 const getCameraIcon = () => {
   const iconSvg = ReactDOMServer.renderToString(
     <div className={styles.iconBg}>
-      <Video color="#e03131" size={26} />
+      <Video color="#f03e3e" size={26} />
     </div>,
   );
 
@@ -17,7 +17,7 @@ const getCameraIcon = () => {
     className: '',
     html: iconSvg,
     iconSize: [32, 32],
-    iconAnchor: [16, 32],
+    iconAnchor: [16, 22],
   });
 };
 
@@ -28,9 +28,9 @@ const CameraMarker = ({ camera }) => {
         <Stack gap="md" style={{ minWidth: 220 }}>
           <Group justify="space-between">
             <Title order={5} m={0}>
-              {camera.name}
+              Камера: {camera.name}
             </Title>
-            <Badge color="red.7" variant="light">
+            <Badge color="blue.7" variant="light">
               Камера
             </Badge>
           </Group>
