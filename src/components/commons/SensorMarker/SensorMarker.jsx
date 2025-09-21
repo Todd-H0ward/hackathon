@@ -4,6 +4,8 @@ import { MapPin } from 'lucide-react';
 import { getSensorIcon } from '@/helpers/getSensorIcon.jsx';
 
 const SensorMarker = ({ sensor }) => {
+  if (!sensor.lat || !sensor.lng) return null;
+
   return (
     <Marker
       position={[sensor.lat, sensor.lng]}
@@ -23,7 +25,9 @@ const SensorMarker = ({ sensor }) => {
           <Group gap={6}>
             <MapPin size={16} />
             <Text size="sm" m={0}>
-              Координаты: {sensor.lat.toFixed(4)}, {sensor.lng.toFixed(4)}
+              {sensor.lat && sensor.lng
+                ? `Координаты: ${sensor.lat.toFixed(4)}, ${sensor.lng.toFixed(4)}`
+                : 'Координаты недоступны'}
             </Text>
           </Group>
 

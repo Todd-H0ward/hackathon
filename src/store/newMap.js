@@ -6,6 +6,7 @@ import { IncidentStore } from '@/store/incidents.js';
 export class NewMapStore {
   _places = observable.map();
   _location = observable.array([56.858745, 35.917421]);
+  _zoom = 10;
   _isLoading = false;
 
   constructor() {
@@ -18,6 +19,10 @@ export class NewMapStore {
 
   get location() {
     return values(this._location);
+  }
+
+  get zoom() {
+    return this._zoom;
   }
 
   get isLoading() {
@@ -38,9 +43,13 @@ export class NewMapStore {
     this._isLoading = value;
   }
 
+  setZoom(zoom) {
+    this._zoom = zoom;
+  }
+
   setLocation = (lat, lng) => {
     this._location.replace([lat, lng]);
-  }
+  };
 
   fetchPlaces = async () => {
     this.setIsLoading(true);

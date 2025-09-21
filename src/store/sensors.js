@@ -24,7 +24,10 @@ export class SensorsStore {
   }
 
   setSensors(sensors) {
-    sensors.forEach((sensor) => this._sensors.set(sensor.id, sensor));
+    sensors.forEach((sensor) => {
+      const existing = this._sensors.get(sensor.id) || {};
+      this._sensors.set(sensor.id, { ...existing, ...sensor });
+    });
   }
 
   fetchSensors = async () => {

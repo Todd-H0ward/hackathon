@@ -10,18 +10,14 @@ import SensorMarker from '@/components/commons/SensorMarker';
 
 import styles from './NewsMap.module.scss';
 
-const LocationUpdater = ({ location }) => {
-  const map = useMapEvents({
-    locationfound: (e) => {
-      map.setView(e.latlng, map.getZoom());
-    },
-  });
+const LocationUpdater = ({ location, zoom }) => {
+  const map = useMapEvents({});
 
   useEffect(() => {
     if (location && location.length === 2) {
-      map.setView(location, map.getZoom());
+      map.setView(location, zoom);
     }
-  }, [location, map]);
+  }, [location, zoom, map]);
 
   return null;
 };
@@ -48,11 +44,11 @@ const NewsMap = observer(() => {
       ) : (
         <MapContainer
           center={newsMap.location}
-          zoom={7}
+          zoom={newsMap.zoom}
           className={styles.root}
           attributionControl={false}
         >
-          <LocationUpdater location={newsMap.location} />
+          <LocationUpdater location={newsMap.location} zoom={newsMap.zoom} />
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
           {newsMap.places.map((place) => (
