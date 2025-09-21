@@ -2,6 +2,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { Badge, Group, Stack, Text, Title } from '@mantine/core';
 import { MapPin } from 'lucide-react';
 import { getSensorIcon } from '@/helpers/getSensorIcon.jsx';
+import styles from './SensorMarker.module.scss';
 
 const SensorMarker = ({ sensor }) => {
   if (!sensor.lat || !sensor.lng) return null;
@@ -10,6 +11,8 @@ const SensorMarker = ({ sensor }) => {
     <Marker
       position={[sensor.lat, sensor.lng]}
       icon={getSensorIcon(sensor.type)}
+      className={styles.root}
+      zIndexOffset={1000}
     >
       <Popup>
         <Stack gap="md" style={{ minWidth: 220 }}>
